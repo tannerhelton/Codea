@@ -1,0 +1,56 @@
+button = class()
+--The below is used when calling the 'button class'
+function button:init(xx, yy, ww, hh)
+    --Below are for user controlled variables
+    self.fontSize = 20
+    self.color = color(255, 255, 255, 255)
+    self.tint = color(0, 0, 0, 0)
+    self.press = color(0, 0, 255, 255)
+    self.x = xx
+    self.y = yy
+    self.w = ww
+    self.h = hh
+    self.w2 = self.w / 2
+    self.h2 = self.h / 2
+    self.pressed = false
+end
+function button:draw(txt)
+    --Check if pressed and if so then change the tint color to be pressed
+    if self.pressed == false then
+        tint(self.tint)
+        else
+        tint(self.press)
+    end
+    --Draw the button sprite at the coords give when the class is called
+    sprite("Documents:button", self.x, self.y, self.w, self.h)
+    fontSize(self.fontSize)
+    fill(self.color)
+    --Draw test to center of button
+    text(txt, self.x, self.y)
+end
+function button:touched(touch)
+    --Detecting if the current touch is inside the width and hieght of the button
+    if CurrentTouch.x > self.x - self.w2 and CurrentTouch.x < self.x + self.w2 and CurrentTouch.y > self.y - self.h2 and CurrentTouch.y < self.y + self.h2 then
+        if touch.state == BEGAN then
+            self.pressed = true
+            self.over = true
+            elseif self.pressed then
+            if touch.state == MOVING then
+                self.over = true
+                elseif touch.state == ENDED then
+                if self.callback ~= nil then self.callback() end
+                self.over = false
+                self.pressed = false
+                return true
+            end
+        end
+        -- Advanced users only
+        elseif self.pressed then
+        if touch.state == MOVING then
+            self.over = false
+            elseif touch.state == ENDED then
+            self.over = false
+            self.pressed = false
+        end
+    end
+end
