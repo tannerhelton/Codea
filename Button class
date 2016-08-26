@@ -1,3 +1,4 @@
+-- Made by Tanner Helton
 button = class()
 --The below is used when calling the 'button class'
 function button:init(xx, yy, ww, hh)
